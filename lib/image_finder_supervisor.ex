@@ -1,13 +1,19 @@
 defmodule ImageFinder.Supervisor do
   use Supervisor
 
-  def start_link do
-    Supervisor.start_link(__MODULE__, :ok)
+  def start_link() do
+    Supervisor.start_link(__MODULE__, :ok, name: __MODULE__)
   end
 
-  def init(:ok) do
-    children = [worker(ImageFinder.Worker, [ImageFinder.Worker])]
+  def init(args) do
+    # IO.puts("init supervisor")
+    # IO.inspect("Los args son #{args}")
+    children = [
+      ImageFinder.Worker,
+      ImageFinder.DownloaderDynamicSupervisor,
+      ImageFinder.Parser
+    ]
 
-    supervise(children, strategy: :one_for_one)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
