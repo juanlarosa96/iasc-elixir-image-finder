@@ -9,9 +9,9 @@ defmodule ImageFinder.Supervisor do
     # IO.puts("init supervisor")
     # IO.inspect("Los args son #{args}")
     children = [
-      ImageFinder.Worker,
+      ImageFinder.WorkerDynamicSupervisor,
       ImageFinder.DownloaderDynamicSupervisor,
-      ImageFinder.Parser
+      ImageFinder.ParserDynamicSupervisor
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

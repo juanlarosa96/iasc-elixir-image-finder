@@ -5,7 +5,7 @@ defmodule ImageFinder.Downloader do
     GenServer.start_link(__MODULE__, state)
   end
 
-  def child_spec({state}) do
+  def child_spec(state) do
     %{
       id: __MODULE__,
       start: {__MODULE__, :start_link, [state]},
@@ -18,15 +18,15 @@ defmodule ImageFinder.Downloader do
     {:ok, init_arg}
   end
 
-  def handle_cast({:fetch, link, target_directory}, state) do
+  def handle_cast({:fetch, link, target_directory}, _state) do
     IO.puts("Going to download #{link} to #{target_directory}")
-    
+
     fetch_link(link, target_directory)
     {:stop, :normal, []}
   end
 
   def fetch_link(link, target_directory) do
-    HTTPotion.get("asdasdas#{link}").body |> save(target_directory)
+    HTTPotion.get(link).body |> save(target_directory)
   end
 
   def digest(body) do

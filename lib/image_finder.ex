@@ -6,7 +6,8 @@ defmodule ImageFinder do
   end
 
   def fetch(source_file, target_directory) do
-    GenServer.call(Worker, {:fetch, source_file, target_directory})
+    {:ok, pid} = ImageFinder.WorkerDynamicSupervisor.start_child([])
+    GenServer.cast(pid, {:fetch, source_file, target_directory})
   end
 end
 

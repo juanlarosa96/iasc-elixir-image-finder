@@ -1,4 +1,4 @@
-defmodule ImageFinder.DownloaderDynamicSupervisor do
+defmodule ImageFinder.ParserDynamicSupervisor do
   use DynamicSupervisor
 
   def start_link(init_arg) do
@@ -6,15 +6,11 @@ defmodule ImageFinder.DownloaderDynamicSupervisor do
   end
 
   def init(_init_arg) do
-    IO.puts("init dynamic supervisor")
     DynamicSupervisor.init(strategy: :one_for_one)
   end
 
   def start_child(state) do
-    spec = ImageFinder.Downloader.child_spec(state)
-    child = DynamicSupervisor.start_child(__MODULE__, spec)
-    IO.inspect(child)
-    child
+    spec = ImageFinder.Parser.child_spec(state)
+    DynamicSupervisor.start_child(__MODULE__, spec)
   end
-  
 end
